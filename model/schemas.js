@@ -1,31 +1,48 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+// models/schemas.js
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-let StudentSchema = Schema({
-    firstName: String,
-    lastName: String,
+/**
+ * Student Schema
+ */
+const StudentSchema = new Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  dateNaissance: { type: Date, required: true }
 });
 
-let student = mongoose.model('Student', StudentSchema);
-
-let courseSchema = Schema({
-    name: String,
-    code: String,
+/**
+ * Course Schema
+ */
+const CourseSchema = new Schema({
+  name: { type: String, required: true },
+  code: { type: String },
 });
 
-let Course = mongoose.model('Course', courseSchema);
-
-let gradeSchema = Schema({
-    student: {type: mongoose.Schema.Types.ObjectId, ref: 'Student'},
-    course: {type: mongoose.Schema.Types.ObjectId, ref: 'Course'},
-    grade: Number,
-    date: Date,
+/**
+ * Grade Schema
+ */
+const GradeSchema = new Schema({
+  student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
+  course: { type: Schema.Types.ObjectId, ref: 'Course', required: true },
+  grade: { type: Number, required: true, min: 0, max: 20 },
+  date: { type: Date, default: Date.now },
 });
-let Grade = mongoose.model('Grade', gradeSchema);
 
-// Exports the modeles
-module.exports = {
-    Student: student,
-    Course: Course,
-    Grade: Grade,
-}
+/**
+ * Prevent OverwriteModelError
+ */
+const Student =
+  mongoose.models.Student || mongoose.model('Student', StudentSchema);
+
+const Course =
+  mongoose.models.Course || mongoose.model('Course', CourseSchema);
+
+const Grade =
+  mongoose.models.Grade || mongoose.model('Grade', GradeSchema);
+
+/**
+ * Export models
+ */
+module.exports = { Student, Course, Grade };

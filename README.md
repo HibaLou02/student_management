@@ -1,5 +1,8 @@
 # API Gestion des étudiants 
-
+## Contributors
+- Hiba El bakkouri
+- Achwak Amanouz
+- Omar Tougui
 ## Configuration 
 
 1. Installer NodeJS [https://nodejs.org/en]
